@@ -17,22 +17,20 @@
 void	load_textures(t_map *map, t_data *data)
 {
 	mlx_texture_t	*tmp;
+	int				i;
 
-	tmp = mlx_load_png(map->textures[0]);
-	data->tex[NORTH] = mlx_texture_to_image(data->mlx, tmp);
-	mlx_delete_texture(tmp);
-	tmp = mlx_load_png(map->textures[1]);
-	data->tex[SOUTH] = mlx_texture_to_image(data->mlx, tmp);
-	mlx_delete_texture(tmp);
-	tmp = mlx_load_png(map->textures[2]);
-	data->tex[WEST] = mlx_texture_to_image(data->mlx, tmp);
-	mlx_delete_texture(tmp);
-	tmp = mlx_load_png(map->textures[3]);
-	data->tex[EAST] = mlx_texture_to_image(data->mlx, tmp);
-	mlx_delete_texture(tmp);
+	i = 0;
+	while (i < DIRECTION_COUNT)
+	{
+		tmp = mlx_load_png(map->textures[i]);
+		if (!tmp)
+			ft_error(data, "Could not load png\n");
+		data->tex[i] = mlx_texture_to_image(data->mlx, tmp);
+		mlx_delete_texture(tmp);
+		if (!data->tex[i])
+			ft_error(data, "Could not load texture\n");
+		i++;
+	}
 	free_double_ptr(map->textures);
 	map->textures = NULL;
-	if (data->tex[NORTH] == NULL || data->tex[SOUTH] == NULL
-		|| data->tex[WEST] == NULL || data->tex[EAST] == NULL)
-		ft_error(data, "Could not load texture\n");
 }

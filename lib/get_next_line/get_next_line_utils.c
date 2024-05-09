@@ -3,113 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 11:23:23 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/04/11 16:21:53 by Dscheffn         ###   ########.fr       */
+/*   Created: 2023/01/04 00:13:57 by ajakob            #+#    #+#             */
+/*   Updated: 2023/08/09 15:33:54 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	gnl_strlen(const char *c)
+static int	ft_strlen_gnl(const char *s)
 {
-	int	len;
+	int	i;
 
-	len = 0;
-	if (c == NULL)
+	i = 0;
+	if (!s)
 		return (0);
-	while (c[len] != '\0')
-		len++;
-	return (len);
+	while (s[i])
+		i++;
+	return (i);
 }
 
-char	*gnl_strchr(char *s, int c)
+static size_t	ft_strlcat_gnl(char *dst, const char *src, size_t dstsize)
 {
-	if (s == NULL)
-		return (NULL);
-	while (*s != '\0' && *s != (char)c)
-		s++;
-	if (*s == (char)c)
-		return ((char *)s);
-	return (0);
+	size_t	srclen;
+	size_t	dstlen;
+	size_t	i;
+
+	srclen = ft_strlen_gnl(src);
+	i = 0;
+	while (i < dstsize && dst[i])
+		i++;
+	dstlen = i;
+	if (dstlen == dstsize)
+		return (dstlen + srclen);
+	ft_strlcpy_gnl(&dst[dstlen], src, dstsize - dstlen);
+	return (dstlen + srclen);
 }
 
-char	*gnl_strjoin(char *s1, char *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
-	char	*new_s;
-	size_t	s1_len;
-	size_t	s2_len;
-	size_t	counter;
+	char	*str;
+	char	*str_p;
+	size_t	size;
 
-	counter = 0;
 	if (!s1 && !s2)
 		return (NULL);
-	s1_len = gnl_strlen(s1);
-	s2_len = gnl_strlen(s2);
-	new_s = malloc(sizeof(char) * (s1_len + s2_len + 1));
-	if (new_s == NULL)
+	size = ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1;
+	str = (char *)malloc(sizeof(char) * (size + 1));
+	if (!str)
 		return (NULL);
-	while (counter++ < s1_len)
-		new_s[counter - 1] = s1[counter - 1];
-	counter = 0;
-	while (counter < s2_len)
+	str_p = str;
+	while (size--)
 	{
-		new_s[s1_len + counter] = s2[counter];
-		counter++;
+		str_p = 0;
+		str_p++;
 	}
-	new_s[s1_len + s2_len] = '\0';
+	ft_strlcpy_gnl(str, s1, ft_strlen_gnl(s1) + 1);
+	ft_strlcat_gnl(str, s2, size);
 	free(s1);
-	return (new_s);
+	free(s2);
+	return (str);
 }
 
-char	*line_grabber(char *remainder)
+char	*ft_substr_gnl(char *s, unsigned int start, size_t len)
 {
-	char	*line;
-	int		counter;
+	char	*str;
 
-	counter = 0;
-	if (remainder[counter] == '\0')
+	str = ft_not_free_substr_gnl(s, start, len);
+	free(s);
+	return (str);
+}
+
+char	*ft_not_free_substr_gnl(char *s, unsigned int start, size_t len)
+{
+	char	*str;
+	size_t	srclen;
+	size_t	i;
+
+	i = 0;
+	if (!s)
 		return (NULL);
-	while (remainder[counter] != '\0' && remainder[counter] != '\n')
-		counter++;
-	if (remainder[counter] == '\n')
-		counter++;
-	line = malloc(sizeof(char) * (counter + 1));
-	if (!line)
-		return (NULL);
-	counter = 0;
-	while (remainder[counter] != '\0' && remainder[counter] != '\n')
+	srclen = ft_strlen_gnl(s);
+	if (srclen > start)
 	{
-		line[counter] = remainder[counter];
-		counter++;
+		while (i < len && s[start + i])
+			i++;
+		len = i;
 	}
-	if (remainder[counter] == '\n')
-		line[counter++] = '\n';
-	line[counter] = '\0';
-	return (line);
-}
-
-char	*remainder_refresh(char *remainder)
-{
-	char	*new_remainder;
-	int		counter;
-	int		new_counter;
-
-	counter = 0;
-	new_counter = 0;
-	if (remainder[counter] == '\0')
-		return (free(remainder), NULL);
-	while (remainder[counter] != '\0' && remainder[counter] != '\n')
-		counter++;
-	if (remainder[counter] == '\n')
-		counter++;
-	new_remainder = malloc(sizeof(char) * (gnl_strlen(remainder) - counter + 1));
-	if (new_remainder == NULL)
-		return (free(remainder), NULL);
-	while (remainder[counter] != '\0')
-		new_remainder[new_counter++] = remainder[counter++];
-	new_remainder[new_counter] = '\0';
-	free(remainder);
-	return (new_remainder);
+	else
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	ft_strlcpy_gnl(str, &s[start], len + 1);
+	return (str);
 }

@@ -35,7 +35,6 @@ void	render(t_data *data, int ray, double distance)
 	double	wall_height;
 	double	top;
 	double	bot;
-	int		i;
 
 	distance *= cos(normalize_angle(data->ray.r_angle - data->player.p_angle));
 	wall_height = TILE / distance * (WIDTH / 2);

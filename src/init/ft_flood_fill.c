@@ -18,7 +18,7 @@ static void	ffl(t_data *data, int x, int y, int max_y)
 
 	file = data->map->file;
 	if (!(y >= 0 && x >= 0 && y < max_y
-			&& x < ft_strlen(file[y]) && file[y][x]))
+			&& x < (int)ft_strlen(file[y]) && file[y][x]))
 		return ;
 	else if (file[y][x] == 'N' || file[y][x] == 'S' ||
 		file[y][x] == 'W' || file[y][x] == 'E' || file[y][x] == '0')

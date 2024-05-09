@@ -61,13 +61,19 @@ static void	count_comma(t_data *data, char *str)
 	while (str[i])
 	{
 		if (str[i] != ',' && (str[i] < '0' || str[i] > '9'))
+		{
+			free(str);
 			ft_error(data, "Invalid color text\n");
+		}
 		if (str[i] == ',')
 			j++;
 		i++;
 	}
 	if (j != 2)
+	{
+		free(str);
 		ft_error(data, "Invalid amount of \',\'\n");
+	}
 }
 
 static void	check_valid_num(t_data *data, char *str)
@@ -75,12 +81,14 @@ static void	check_valid_num(t_data *data, char *str)
 	char	**num;
 	int		i;
 
-	i = 0;
-	count_comma(data, str);
+	i = -1;
 	num = ft_split(str, ',');
 	if (!num)
+	{
+		werror_ignore_free(str);
 		ft_error(data, "Allocation Failed\n");
-	while (num[i] && i < 3)
+	}
+	while (num[++i] && i < 3)
 	{
 		if (ft_atoi(num[i]) < 0 || ft_atoi(num[i]) > 255)
 		{
@@ -88,15 +96,13 @@ static void	check_valid_num(t_data *data, char *str)
 			free_double_ptr(num);
 			ft_error(data, "Invalid color number\n");
 		}
-		i++;
-	}
-	if (num[i] || i != 3)
-	{
-		free(str);
-		free_double_ptr(num);
-		ft_error(data, "Invalid amount of color numbers\n");
 	}
 	free_double_ptr(num);
+	if (i != 3)
+	{
+		free(str);
+		ft_error(data, "Invalid amount of color numbers\n");
+	}
 }
 
 void	check_path(t_data *data, char *str, char element)
@@ -109,10 +115,14 @@ void	check_path(t_data *data, char *str, char element)
 		if (fd == -1)
 		{
 			free(str);
+			close(fd);
 			ft_error(data, "Invalid path\n");
 		}
 		close(fd);
 	}
 	else
+	{
+		count_comma(data, str);
 		check_valid_num(data, str);
+	}
 }

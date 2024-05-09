@@ -121,6 +121,7 @@ int		ft_map_size(char *argv);
 void	free_double_ptr(char **ptr);
 void	r_skip_spaces(char **file, int *y, int *x);
 void	skip_spaces(char **file, int *y, int *x);
+void	werror_ignore_free(char *str);
 
 // ft_colors.c
 void	load_colors(t_map *map);
@@ -146,7 +147,7 @@ void	check_path(t_data *data, char *str, char element);
 
 // ft_texture.c
 void	skip_spaces(char **file, int *y, int *x);
-char	**ft_create_textures(t_data *data);
+void	ft_create_textures(t_data *data);
 
 //https://www.omnicalculator.com/math/circle
 #endif

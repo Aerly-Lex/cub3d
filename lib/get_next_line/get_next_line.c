@@ -3,91 +3,128 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 11:56:03 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/04/11 16:22:11 by Dscheffn         ###   ########.fr       */
+/*   Created: 2023/01/04 00:13:08 by ajakob            #+#    #+#             */
+/*   Updated: 2023/08/09 15:35:37 by ajakob           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*reader(int fd, char *remainder)
+static int	ft_strchr_gnl(const char *s, int c)
 {
-	char	*buff;
-	int		bytes_reader;
+	char	*str;
+	char	ch;
+	int		i;
 
-	if (read(fd, 0, 0) < 0)
-		return (free(remainder), NULL);
-	bytes_reader = 1;
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buff == NULL)
-		return (NULL);
-	while (bytes_reader > 0 && gnl_strchr(remainder, '\n') == 0)
+	if (!s)
+		return (-1);
+	str = (char *)s;
+	ch = (char)c;
+	i = 0;
+	while (str[i])
 	{
-		bytes_reader = read(fd, buff, BUFFER_SIZE);
-		if (bytes_reader == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
-		buff[bytes_reader] = '\0';
-		remainder = gnl_strjoin(remainder, buff);
-		if (remainder == 0)
-			return (free(remainder), NULL);
+		if (str[i] == ch)
+			return (i);
+		i++;
 	}
-	free(buff);
-	return (remainder);
+	if (str[i] == ch)
+		return (i);
+	return (-1);
+}
+
+void	ft_strlcpy_gnl(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+
+	i = 0;
+	if (dstsize != 0)
+	{
+		while (i < dstsize - 1 && src[i])
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+		i = 0;
+	}
+}
+
+static char	*read_one(int fd, char *temp)
+{
+	char	*buffer;
+	int		r_output;
+
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	r_output = read(fd, buffer, BUFFER_SIZE);
+	buffer[r_output] = '\0';
+	if (r_output < 0)
+	{
+		free (temp);
+		temp = NULL;
+		free (buffer);
+		return (NULL);
+	}
+	if (r_output == 0)
+	{
+		free (buffer);
+		return (NULL);
+	}
+	return (buffer);
+}
+
+static char	*line_alloc(int fd, char **temp, char *line)
+{
+	char	*buffer;
+	int		i;
+
+	buffer = read_one(fd, *temp);
+	if (!buffer)
+		return (free(*temp), *temp = NULL, line);
+	i = ft_strchr_gnl(buffer, '\n');
+	while (i < 0)
+	{
+		line = ft_strjoin_gnl(line, buffer);
+		buffer = read_one(fd, *temp);
+		if (!buffer)
+			return (free(*temp), *temp = NULL, line);
+		i = ft_strchr_gnl(buffer, '\n');
+	}
+	if (i >= 0)
+	{
+		line = ft_strjoin_gnl(line, ft_not_free_substr_gnl(buffer, 0, i + 1));
+		*temp = ft_substr_gnl(buffer, i + 1, BUFFER_SIZE - i);
+		buffer = NULL;
+	}
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder;
+	static char	*temp;
 	char		*line;
+	int			i;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);
-	remainder = reader(fd, remainder);
-	if (remainder == NULL)
-		return (NULL);
-	line = line_grabber(remainder);
-	remainder = remainder_refresh(remainder);
-	return (line);
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (free(temp), temp = NULL, NULL);
+	line = NULL;
+	if (temp)
+	{
+		i = ft_strchr_gnl(temp, '\n');
+		if (i >= 0)
+		{
+			line = ft_strjoin_gnl(line, ft_not_free_substr_gnl(temp, 0, i + 1));
+			temp = ft_substr_gnl(temp, i + 1, BUFFER_SIZE - i);
+			return (line);
+		}
+		else if (i < 0)
+		{
+			line = ft_strjoin_gnl(line, temp);
+			temp = NULL;
+		}
+	}
+	return (line_alloc(fd, &temp, line));
 }
-
-// return Number of bytes read on success
-// return 0 on reaching the end of file
-// return -1 on error
-// return -1 on signal interrupt
-
-// #include <fcntl.h>
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		i = 1;
-// 	// int		fd1;
-// 	// int		fd2;
-// 	int		fd3;
-// 	// fd1 = open("tests/test.txt", O_RDONLY);
-// 	// fd2 = open("tests/test1.txt", O_RDONLY);
-// 	fd3 = open("tests/test2.txt", O_RDONLY);
-// 	printf("BUFFER_SIZE: %d\n", BUFFER_SIZE);
-// 	while (i < 5)
-// 	{
-// 		// line = get_next_line(fd1);
-// 		// printf("line1-%d: %s", i, line);
-// 		// free(line);
-// 		// line = get_next_line(fd2);
-// 		// printf("line2-%d: %s", i, line);
-// 		// free(line);
-// 		line = get_next_line(fd3);
-// 		printf("line3-%d: %s", i, line);
-// 		free(line);
-// 		i++;
-// 	}
-// 	// close(fd1);
-// 	// close(fd2);
-// 	close(fd3);
-// 	return (0);
-// }

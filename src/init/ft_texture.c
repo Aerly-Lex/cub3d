@@ -12,7 +12,8 @@
 
 #include "../cub3d.h"
 
-static char	*create_path(t_data *data, char *element, int *y, int *x)
+// create_path thanks norm
+static char	*c_pa(t_data *data, char *element, int *y, int *x)
 {
 	char	**file;
 	char	*str;
@@ -81,7 +82,6 @@ static char	**sort_order(t_data *data, char **textures)
 {
 	char	**tmp;
 	int		i;
-	int		j;
 
 	i = 0;
 	tmp = ft_calloc(sizeof(char *), 7);
@@ -97,31 +97,29 @@ static char	**sort_order(t_data *data, char **textures)
 	return (tmp);
 }
 
-char	**ft_create_textures(t_data *data)
+void	ft_create_textures(t_data *data)
 {
-	char	**textures;
 	int		i;
 	int		y;
 	int		x;
 
-	textures = ft_calloc(sizeof(char *), 13);
-	if (!textures)
+	data->map->textures = ft_calloc(sizeof(char *), 13);
+	if (!data->map->textures)
 		ft_error(data, "Allocation Failed\n");
-	textures[12] = NULL;
+	data->map->textures[12] = NULL;
 	i = 0;
 	y = 0;
 	x = 0;
 	while (i < 12)
 	{
 		skip_spaces(data->map->file, &y, &x);
-		textures[i++] = check_elements(data, &y, &x);
+		data->map->textures[i++] = check_elements(data, &y, &x);
 		skip_spaces(data->map->file, &y, &x);
-		textures[i] = create_path(data, textures[i - 1], &y, &x);
+		data->map->textures[i] = c_pa(data, data->map->textures[i - 1], &y, &x);
 		i++;
 	}
-	check_for_doubles(data, textures);
-	textures = sort_order(data, textures);
+	check_for_doubles(data, data->map->textures);
+	data->map->textures = sort_order(data, data->map->textures);
 	skip_spaces(data->map->file, &y, &x);
 	realloc_file(data, data->map->file, y);
-	return (textures);
 }

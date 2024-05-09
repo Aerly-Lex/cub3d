@@ -23,7 +23,8 @@ static int	check_wall(t_data *data, double x, double y)
 	y_map = floor(y / TILE);
 	if (y_map > data->map->m_height || x_map > data->map->m_width)
 		return (1);
-	if (data->map->map2d[y_map] && x_map <= ft_strlen(data->map->map2d[y_map]))
+	if (data->map->map2d[y_map]
+		&& x_map <= (int)ft_strlen(data->map->map2d[y_map]))
 		if (data->map->map2d[y_map][x_map] == '1')
 			return (1);
 	return (0);

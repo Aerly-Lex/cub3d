@@ -52,7 +52,7 @@ void	r_skip_spaces(char **file, int *y, int *x)
 
 void	skip_spaces(char **file, int *y, int *x)
 {
-	while (file[*y][*x] && (file[*y][*x] == ' '
+	while (file[*y] && file[*y][*x] && (file[*y][*x] == ' '
 		|| file[*y][*x] == '\t' || file[*y][*x] == '\n'))
 	{
 		if (file[*y][*x] == '\n')
@@ -63,4 +63,9 @@ void	skip_spaces(char **file, int *y, int *x)
 		else
 			(*x)++;
 	}
+}
+
+void	werror_ignore_free(char *str)
+{
+	free(str);
 }

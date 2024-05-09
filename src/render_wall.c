@@ -49,7 +49,7 @@ static void	get_texture(t_data *data)
 }
 
 // calculate_texture_x (thanks norminette!)
-static int	c_tex_x(t_data *data, double wall_hit_pos, int texture_width)
+static int	c_tex_x(t_data *data, int texture_width)
 {
 	double	relative_pos;
 	int		texture_x;
@@ -73,7 +73,7 @@ void	draw_wall(t_data *data, int ray, int top, int bot)
 
 	get_texture(data);
 	step = (double)data->tex[data->f_tex]->height / (bot - top);
-	tex_x = c_tex_x(data, data->ray.wall_hit_x, data->tex[data->f_tex]->width);
+	tex_x = c_tex_x(data, data->tex[data->f_tex]->width);
 	if ((bot - top) > HEIGHT)
 		tex_y = top - (HEIGHT / 2) + ((bot - top) / 2) * step;
 	else

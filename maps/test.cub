@@ -1,14 +1,10 @@
 NO ./texture/North.png
 SO ./texture/South.png
+WE ./texture/punisher.png
 EA ./texture/North.png
-WE
- ./texture/punisher.png
-
 
 F 100,100,100
 C 100,70,50
-
-
 
 111111111111111111
 100000001000000001

@@ -40,18 +40,15 @@ static int	mod_strlen(char **str, int y, int x, int len)
 		while (str[y][x])
 		{
 			if (str[y][x] == '\t')
-			{
 				len += 4;
-				x++;
-			}
 			else
-			{
 				len++;
-				x++;
-			}
+			x++;
 		}
 		y++;
 	}
+	if (len > max_len)
+		max_len = len;
 	return (max_len);
 }
 
@@ -70,9 +67,11 @@ static void	*mod_calloc(size_t num, size_t size)
 static char	*mod_strdup(char *s1, int len)
 {
 	char	*ptr;
+	int		check;
 	int		i;
 	int		j;
 
+	check = 0;
 	i = 0;
 	j = 0;
 	ptr = mod_calloc(sizeof(char), len + 1);
@@ -81,16 +80,15 @@ static char	*mod_strdup(char *s1, int len)
 	while (s1[i])
 	{
 		if (s1[i] == '\t')
-		{
 			j += 4;
-			i++;
-		}
 		else if (s1[i] == '\n')
-			i++;
+			check = 1;
 		else
-			ptr[j++] = s1[i++];
+			ptr[j++] = s1[i];
+		i++;
 	}
-	ptr[len - 1] = '\n';
+	if (check == 1)
+		ptr[len - 1] = '\n';
 	ptr[len] = '\0';
 	return (ptr);
 }

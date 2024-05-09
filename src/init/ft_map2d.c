@@ -37,13 +37,12 @@ static void	check_if_chars_are_valid(t_data *data, char **file)
 		y++;
 	}
 	if (i != 1)
-		ft_error(data, "Invalid player\n");
+		ft_error(data, "Invalid amount of players\n");
 }
 
 static void	check_for_new_lines(t_data *data, char **file)
 {
 	int	y;
-	int	x;
 
 	y = 0;
 	while (file[y])
@@ -54,7 +53,7 @@ static void	check_for_new_lines(t_data *data, char **file)
 				&& !ft_strchr(file[y], '0'))
 				y++;
 			if (file[y] && (ft_strchr(file[y], '1') || ft_strchr(file[y], '0')))
-				ft_error(data, "Invalid Input\n");
+				ft_error(data, "Second map or player is out of bounce!\n");
 			y--;
 		}
 		y++;
@@ -97,7 +96,7 @@ static void	check_outer_walls(t_data *data, char **file)
 	while (file[0][x])
 	{
 		if (file[0][x] != '1' && file[0][x] != '\n' && file[0][x] != ' ')
-			ft_error(data, "Invalid Input\n");
+			ft_error(data, "Invalid first wall\n");
 		x++;
 	}
 	y = 1;
@@ -107,7 +106,7 @@ static void	check_outer_walls(t_data *data, char **file)
 	{
 		if (file[y][x] && file[y][x] != '1'
 			&& file[y][x] != '\n' && file[y][x] != ' ')
-			ft_error(data, "Invalid Input\n");
+			ft_error(data, "Invalid last wall\n");
 		x++;
 	}
 }
