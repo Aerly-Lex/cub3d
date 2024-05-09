@@ -69,7 +69,6 @@ int	main(int argc, char **argv)
 		ft_error(&data, "MLX_LOOP_HOOK failed\n");
 	mlx_key_hook(data.mlx, &ft_keys, &data);
 	mlx_loop(data.mlx);
-	mlx_terminate(data.mlx);
 	liberator(&data);
 	return (0);
 }

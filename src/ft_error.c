@@ -15,13 +15,20 @@
 void	liberator(t_data *data)
 {
 	if (data->map->file)
+	{
+		printf("No\n");
 		free_double_ptr(data->map->file);
+	}
+	printf("1\n");
 	if (data->map->map2d)
 		free_double_ptr(data->map->map2d);
+	printf("2\n");
 	if (data->map->textures)
 		free_double_ptr(data->map->textures);
+	printf("3\n");
 	if (data->map)
 		free(data->map);
+	printf("4\n");
 	if (data->tex[NORTH])
 		mlx_delete_image(data->mlx, data->tex[NORTH]);
 	if (data->tex[SOUTH])
@@ -40,6 +47,8 @@ void	ft_error(t_data *data, char *str)
 	printf("Error\n");
 	if (str)
 		printf("%s", str);
+	if (!data)
+		exit(-1);
 	liberator(data);
 	exit(-1);
 }

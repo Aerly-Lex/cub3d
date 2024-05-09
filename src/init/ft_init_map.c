@@ -95,7 +95,7 @@ void	ft_init_map(t_data *data, int argc, char **argv)
 	t_map	*map;
 	char	**file;
 
-	ft_check_file(data, argc, argv[1]);
+	ft_check_file(NULL, argc, argv[1]);
 	map = ft_calloc(sizeof(t_map), 1);
 	if (!map)
 		ft_error(data, "Allocation Failed\n");
@@ -103,6 +103,7 @@ void	ft_init_map(t_data *data, int argc, char **argv)
 	map->file = ft_create_file(data, argv);
 	map->textures = ft_create_textures(data);
 	map->map2d = ft_create_map2d(data);
+	map->file = NULL;
 	ft_find_player(map);
 	ft_width_height(map);
 }

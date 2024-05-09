@@ -31,6 +31,7 @@ void	load_textures(t_map *map, t_data *data)
 	data->tex[EAST] = mlx_texture_to_image(data->mlx, tmp);
 	mlx_delete_texture(tmp);
 	free_double_ptr(map->textures);
+	map->textures = NULL;
 	if (data->tex[NORTH] == NULL || data->tex[SOUTH] == NULL
 		|| data->tex[WEST] == NULL || data->tex[EAST] == NULL)
 		ft_error(data, "Could not load texture\n");
