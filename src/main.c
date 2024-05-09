@@ -6,7 +6,7 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:12:48 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/05/09 16:01:27 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:22:59 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int	main(int argc, char **argv)
 	mlx_key_hook(data.mlx, &ft_keys, &data);
 	mlx_loop(data.mlx);
 	liberator(&data);
+	mlx_terminate(data.mlx);
 	return (0);
 }

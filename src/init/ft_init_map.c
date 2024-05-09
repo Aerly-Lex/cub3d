@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:29:10 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/05/05 15:46:15 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:21:33 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ static void	ft_check_file(t_data *data, int argc, char *argv)
 	if (argc != 2)
 		ft_error(data, "Wrong number of arguments\n");
 	fd = open(argv, O_RDONLY);
-	i = 0;
 	if (fd == -1)
+	{
+		close(fd);
 		ft_error(data, "Can't open file\n");
+	}
 	close(fd);
+	i = 0;
 	while (argv[i] != '\0')
 		i++;
 	i -= 4;
@@ -100,6 +103,10 @@ void	ft_init_map(t_data *data, int argc, char **argv)
 	if (!map)
 		ft_error(data, "Allocation Failed\n");
 	data->map = map;
+	data->tex[0] = NULL;
+	data->tex[1] = NULL;
+	data->tex[2] = NULL;
+	data->tex[3] = NULL;
 	map->file = ft_create_file(data, argv);
 	map->textures = ft_create_textures(data);
 	map->map2d = ft_create_map2d(data);

@@ -6,7 +6,7 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:33:00 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/05/09 16:01:44 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:23:55 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,16 @@ void	liberator(t_data *data)
 	printf("4\n");
 	if (data->tex[NORTH])
 		mlx_delete_image(data->mlx, data->tex[NORTH]);
+	printf("NORTH\n");
 	if (data->tex[SOUTH])
 		mlx_delete_image(data->mlx, data->tex[SOUTH]);
+	printf("SOUTH\n");
 	if (data->tex[WEST])
 		mlx_delete_image(data->mlx, data->tex[WEST]);
+	printf("WEST\n");
 	if (data->tex[EAST])
 		mlx_delete_image(data->mlx, data->tex[EAST]);
-	if (data->mlx)
-		mlx_terminate(data->mlx);
+	printf("5\n");
 }
 
 // Cleans and exits the program as failure.

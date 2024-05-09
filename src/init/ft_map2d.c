@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_map2d.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ajakob <ajakob@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 15:44:46 by ajakob            #+#    #+#             */
-/*   Updated: 2024/05/05 16:01:21 by ajakob           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:28:01 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	check_if_chars_are_valid(t_data *data, char **file)
 		y++;
 	}
 	if (i != 1)
-		ft_error(data, "Invalid amount of players\n");
+		ft_error(data, "Invalid player\n");
 }
 
 static void	check_for_new_lines(t_data *data, char **file)
@@ -54,7 +54,7 @@ static void	check_for_new_lines(t_data *data, char **file)
 				&& !ft_strchr(file[y], '0'))
 				y++;
 			if (file[y] && (ft_strchr(file[y], '1') || ft_strchr(file[y], '0')))
-				ft_error(data, "Second map found\n");
+				ft_error(data, "Invalid Input\n");
 			y--;
 		}
 		y++;
@@ -97,7 +97,7 @@ static void	check_outer_walls(t_data *data, char **file)
 	while (file[0][x])
 	{
 		if (file[0][x] != '1' && file[0][x] != '\n' && file[0][x] != ' ')
-			ft_error(data, "Invalid first wall\n");
+			ft_error(data, "Invalid Input\n");
 		x++;
 	}
 	y = 1;
@@ -107,7 +107,7 @@ static void	check_outer_walls(t_data *data, char **file)
 	{
 		if (file[y][x] && file[y][x] != '1'
 			&& file[y][x] != '\n' && file[y][x] != ' ')
-			ft_error(data, "Invalid last wall\n");
+			ft_error(data, "Invalid Input\n");
 		x++;
 	}
 }
