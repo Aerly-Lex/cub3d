@@ -6,7 +6,7 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 14:56:32 by ajakob            #+#    #+#             */
-/*   Updated: 2024/05/09 15:16:29 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2024/05/10 17:15:20 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,8 @@ int	unit_circle(float angle, char c)
 	return (0);
 }
 
-// check the intersection
-int	inter_check(double angle, double *inter, double *step, int is_horizon)
+void	set_x_y(double *x, double *y, double x_step, double y_step)
 {
-	if (is_horizon)
-	{
-		if (angle > 0 && angle < M_PI)
-		{
-			*inter += TILE;
-			return (-1);
-		}
-		*step *= -1;
-	}
-	else
-	{
-		if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2))
-		{
-			*inter += TILE;
-			return (-1);
-		}
-		*step *= -1;
-	}
-	return (1);
+	*x += x_step;
+	*y += y_step;
 }

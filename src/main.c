@@ -6,13 +6,13 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:12:48 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/05/09 17:22:59 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:59:38 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_init_player(t_data *data)
+static void	ft_init_player(t_data *data)
 {
 	data->player.player_x = data->map->x_player * TILE + TILE / 2;
 	data->player.player_y = data->map->y_player * TILE + TILE / 2;
@@ -22,12 +22,12 @@ void	ft_init_player(t_data *data)
 	else if (data->map->direction == 'S')
 		data->player.p_angle = M_PI / 2;
 	else if (data->map->direction == 'E')
-		data->player.p_angle = 0;
+		data->player.p_angle = 0.00001;
 	else if (data->map->direction == 'W')
 		data->player.p_angle = M_PI;
 }
 
-void	ft_init_mlx(t_data *data)
+static void	ft_init_mlx(t_data *data)
 {
 	data->mlx = mlx_init(WIDTH, HEIGHT, "Test", false);
 	if (!data->mlx)
@@ -39,7 +39,7 @@ void	ft_init_mlx(t_data *data)
 		ft_error(data, "MLX_IMAGE_TO_WINDOW failed\n");
 }
 
-void	ft_game(void	*param)
+static void	ft_game(void	*param)
 {
 	t_data	*data;
 
@@ -51,7 +51,7 @@ void	ft_game(void	*param)
 	mlx_image_to_window(data->mlx, data->window, 0, 0);
 }
 
-void	ft_init(int argc, char **argv, t_data *data)
+static void	ft_init(int argc, char **argv, t_data *data)
 {
 	ft_init_map(data, argc, argv);
 	ft_init_player(data);

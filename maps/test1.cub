@@ -1,6 +1,6 @@
 NO ./texture/punisher.png
-SO ./texture/Block.png
-WE ./texture/Block.png
+SO ./texture/cobblestone_1.png
+WE ./texture/cobblestone_3.png
 EA ./texture/Block.png
 
 F 100,100,100
@@ -14,6 +14,6 @@ C 100,70,50
 100001000000000001
 10000000W000000001
 100000000000000001
-100000000000000001
+100000000000010001
 100000000000000001
 111111111111111111

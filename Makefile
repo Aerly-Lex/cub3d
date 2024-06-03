@@ -2,7 +2,7 @@
 
 NAME	:= cub3d
 CC		:= gcc
-CFLAGS	:= -Ofast -Wextra -Wall -Werror -Wunreachable-code
+CFLAGS	:= -Ofast -Wunreachable-code -Wextra -Wall -Werror
 LIBMLX	:= ./lib/MLX42
 LIBFT	:= ./lib/libft
 GNL		:= ./lib/get_next_line

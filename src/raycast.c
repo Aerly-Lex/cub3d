@@ -6,7 +6,7 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 11:10:39 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/05/09 15:33:10 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2024/05/11 13:39:08 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,25 @@ static double	calc_horiz(t_data *data, double angle)
 	double	y;
 	double	x_step;
 	double	y_step;
-	int		pixel;
+	int		offset;
 
 	y_step = TILE;
 	x_step = TILE / tan(angle);
 	y = floor(data->player.player_y / TILE) * TILE;
-	pixel = inter_check(angle, &y, &y_step, 1);
+	offset = 1;
+	if (angle >= 0 && angle <= M_PI)
+	{
+		offset = -1;
+		y += TILE;
+	}
+	else
+		y_step *= -1;
 	x = data->player.player_x + (y - data->player.player_y) / tan(angle);
 	if ((unit_circle(angle, 'y') && x_step > 0)
 		|| (!unit_circle(angle, 'y') && x_step < 0))
 		x_step *= -1;
-	while (!check_wall(data, x, y - pixel))
-	{
-		x += x_step;
-		y += y_step;
-	}
+	while (!check_wall(data, x, y - offset))
+		set_x_y(&x, &y, x_step, y_step);
 	data->ray.wall_hit_x = x;
 	return (calc_distance(data->player.player_x, x, data->player.player_y, y));
 }
@@ -70,21 +74,25 @@ static double	calc_vertic(t_data *data, double angle)
 	double	y;
 	double	x_step;
 	double	y_step;
-	int		pixel;
+	int		offset;
 
 	x_step = TILE;
 	y_step = TILE * tan(angle);
 	x = floor(data->player.player_x / TILE) * TILE;
-	pixel = inter_check(angle, &x, &x_step, 0);
+	offset = 1;
+	if (!(angle >= M_PI_2 && angle <= 3 * M_PI_2))
+	{
+		offset = -1;
+		x += TILE;
+	}
+	else
+		x_step *= -1;
 	y = data->player.player_y + (x - data->player.player_x) * tan(angle);
 	if ((unit_circle(angle, 'x') && y_step < 0)
 		|| (!unit_circle(angle, 'x') && y_step > 0))
 		y_step *= -1;
-	while (!check_wall(data, x - pixel, y))
-	{
-		x += x_step;
-		y += y_step;
-	}
+	while (!check_wall(data, x - offset, y))
+		set_x_y(&x, &y, x_step, y_step);
 	data->ray.wall_hit_y = y;
 	return (calc_distance(data->player.player_x, x, data->player.player_y, y));
 }

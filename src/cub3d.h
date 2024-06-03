@@ -6,7 +6,7 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:14:34 by Dscheffn          #+#    #+#             */
-/*   Updated: 2024/05/09 16:01:28 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2024/05/11 13:39:53 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # define WIDTH	1920
 # define FOV	60
 # define TILE	10
-# define MV_SPEED 2
-# define ROTATION_SPEED 0.05
+# define MV_SPEED 1
+# define ROTATION_SPEED 0.04
 
 # define BLACK       0x000000FF  // RGB(0, 0, 0)
 # define WHITE       0xFFFFFFFF  // RGB(255, 255, 255)
@@ -103,7 +103,7 @@ void	ft_keys(mlx_key_data_t keydata, void *param);
 // ft_raycast_utils.c
 double	normalize_angle(double angle);
 int		unit_circle(float angle, char c);
-int		inter_check(double angle, double *inter, double *step, int is_horizon);
+void	set_x_y(double *x, double *y, double x_step, double y_step);
 
 // ft_raycast.c
 void	raycast(t_data *data);
